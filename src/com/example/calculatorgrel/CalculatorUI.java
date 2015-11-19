@@ -12,16 +12,15 @@ import com.vaadin.ui.Window;
 /**
  * Calculator for Gravity Electric.
  */
-public class CalculatorGrEl extends Application implements ClickListener {
+public class CalculatorUI extends Application implements ClickListener {
 
 	private static final long serialVersionUID = 1L;
-
-	private double current = 0.0;
-	private double stored = 0.0;
-	private char lastOperationRequested = 'C';
+	
 	private double newValue;
 
 	private final Label display = new Label("Test it!");
+	
+	private Logic logic = new Logic();
 
 	@Override
 	public void init() {
@@ -56,56 +55,12 @@ public class CalculatorGrEl extends Application implements ClickListener {
 
 		char requestedOperation = button.getCaption().charAt(0);
 
-		newValue = calculate(requestedOperation);
+		newValue = logic.calculate(requestedOperation);
 
 		display.setValue(newValue);
 
 	}
 
-	// Calculator "business logic" implemented here 
-	private double calculate(char requestedOperation) {
-		if ('0' <= requestedOperation && requestedOperation <= '9') {
-			current = current * 10
-					+ Double.parseDouble("" + requestedOperation);
-			return current;
-		}
-		switch (lastOperationRequested) {
-		case '+':
-			stored += current;
-			break;
-		case '-':
-			stored -= current;
-			break;
-		case '/':
-			stored /= current;
-			break;
-		case '*':
-			stored *= current;
-			break;
-		case 'l':
-			stored = Math.log(current);
-			break;
-		case 's':
-			stored = Math.sin(current);
-			break;
-		case 'c':
-			stored = Math.cos(current);
-			break;
-		case '^':
-			stored = Math.pow(stored,current);
-			break;
-		case 'C':
-			stored = current;
-			break;
-		}
-		lastOperationRequested = requestedOperation;
-		current = 0.0;
-		if (requestedOperation == 'C') {
-			stored = 0.0;
-		}
-		return stored;
-
-	}
 
 
 }
